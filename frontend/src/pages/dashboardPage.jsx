@@ -158,9 +158,9 @@ function DashboardPage() {
       <nav className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-2xl font-bold text-slate-800">CollaborateX</h1>
+            <h1 className="text-2xl font-bold text-slate-800">CollabSpace</h1>
             <p className="text-sm text-slate-500">
-              Realtime Collaboration Platform
+              Real-Time Document Collaboration Platform
             </p>
           </div>
 

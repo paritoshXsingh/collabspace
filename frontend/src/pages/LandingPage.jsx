@@ -7,9 +7,11 @@ function LandingPage() {
       <header className="bg-white border-b">
         <div className="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
           <div>
-            <h1 className="text-4xl font-bold">CollaborateX</h1>
+            <h1 className="text-4xl font-bold">CollabSpace</h1>
 
-            <p className="text-gray-500">Realtime Collaboration Platform</p>
+            <p className="text-gray-500">
+              Real-Time Document Collaboration Platform
+            </p>
           </div>
 
           <div className="flex gap-3">
@@ -30,9 +32,9 @@ function LandingPage() {
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-6 py-24">
         <h1 className="text-6xl font-bold mb-6">
-          Collaborate on Documents
+          CollabSpace
           <br />
-          in Real Time
+          Work together on documents in real time.
         </h1>
 
         <p className="text-xl text-gray-600 mb-8">
