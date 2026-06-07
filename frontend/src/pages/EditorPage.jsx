@@ -130,10 +130,10 @@ const EditorPage = () => {
       } catch (error) {
         console.log(error);
       }
-    }, 1000);
+    }, 1000); //debouncing
 
     return () => clearTimeout(timeout);
-  }, [content]);
+  }, [content, title]);
 
   //fetch all collaborators
   const fetchCollaborators = async () => {
