@@ -60,6 +60,8 @@ export const getSingleDocument = asyncHandler(async (req, res) => {
   });
 });
 
+
+
 // UPDATE DOC (PUT)
 export const updateDocument = asyncHandler(async (req, res) => {
   const { title, content } = req.body;
@@ -70,13 +72,26 @@ export const updateDocument = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Document not found");
   }
 
-  if (document.owner.toString() !== req.user._id.toString()) {
-    throw new ApiError(403, "Only owner can update document");
+  const isOwner = document.owner.toString() === req.user._id.toString();
+
+  const isCollaborator = document.collaborators.some(
+    (collaboratorId) => collaboratorId.toString() === req.user._id.toString(),
+  );
+
+  // Viewer cannot update anything
+  if (!isOwner && !isCollaborator) {
+    throw new ApiError(403, "You do not have permission to edit this document");
   }
 
-  document.title = title || document.title;
+  // Only owner can update title
+  if (isOwner && title !== undefined) {
+    document.title = title;
+  }
 
-  document.content = content !== undefined ? content : document.content;
+  // Owner and collaborator can update content
+  if (content !== undefined) {
+    document.content = content;
+  }
 
   await document.save();
 
@@ -86,6 +101,8 @@ export const updateDocument = asyncHandler(async (req, res) => {
     document,
   });
 });
+
+
 
 //SHARE DOC
 export const shareDocument = asyncHandler(async (req, res) => {
