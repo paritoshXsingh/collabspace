@@ -254,8 +254,16 @@ const EditorPage = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="text-4xl font-bold w-full outline-none"
+            readOnly={role !== "owner"}
+            className={`text-4xl font-bold w-full outline-none ${
+              role !== "owner" ? "cursor-not-allowed text-gray-700" : ""
+            }`}
           />
+          {role === "collaborator" && (
+            <p className="text-sm text-gray-500 mt-1">
+              Only the owner can rename this document
+            </p>
+          )}
 
           <div className="flex items-center gap-3 mt-2">
             <p className="text-gray-500">Active Users ({activeUsers.length})</p>
