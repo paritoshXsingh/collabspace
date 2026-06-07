@@ -28,6 +28,18 @@ const initializeSocket = (io) => {
       socket.to(documentId).emit("receive-changes", content);
     });
 
+    socket.on("leave-document", ({ documentId, userId }) => {
+      if (!activeUsers[documentId]) return;
+
+      activeUsers[documentId] = activeUsers[documentId].filter(
+        (user) => user.id !== userId,
+      );
+
+      io.to(documentId).emit("active-users", activeUsers[documentId]);
+
+      console.log(`User ${userId} left document ${documentId}`);
+    });
+
     socket.on("disconnect", () => {
       for (const documentId in activeUsers) {
         activeUsers[documentId] = activeUsers[documentId].filter(

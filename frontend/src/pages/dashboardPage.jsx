@@ -11,6 +11,7 @@ import {
   leaveDocument,
 } from "../api/dashboardApi";
 import { logout } from "../features/auth/authSlice";
+import { socket } from "../sockets/socket";
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -87,6 +88,10 @@ function DashboardPage() {
 
     try {
       await leaveDocument(documentId, token);
+      socket.emit("leave-document", {
+        documentId,
+        userId: user.id,
+      });
 
       setSharedDocuments(
         sharedDocuments.filter((doc) => doc._id !== documentId),
