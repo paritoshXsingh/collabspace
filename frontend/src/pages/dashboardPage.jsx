@@ -8,6 +8,7 @@ import {
   createDocument,
   deleteDocument,
   getSharedDocuments,
+  leaveDocument,
 } from "../api/dashboardApi";
 import { logout } from "../features/auth/authSlice";
 
@@ -69,6 +70,31 @@ function DashboardPage() {
       navigate(`/documents/${data.document._id}`);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  //handleLeaveDocument
+  const handleLeaveDocument = async (documentId) => {
+    const result = await Swal.fire({
+      title: "Leave Collaboration?",
+      text: "You will lose access to this document.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Leave",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      await leaveDocument(documentId, token);
+
+      setSharedDocuments(
+        sharedDocuments.filter((doc) => doc._id !== documentId),
+      );
+
+      toast.success("Left collaboration");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to leave document");
     }
   };
 
@@ -290,12 +316,21 @@ function DashboardPage() {
 
                 <p className="text-sm text-gray-500">{doc.owner.email}</p>
 
-                <button
-                  onClick={() => navigate(`/documents/${doc._id}`)}
-                  className="mt-4 w-full bg-black text-white py-2 rounded-xl"
-                >
-                  Open
-                </button>
+                <div className="flex gap-2 mt-4">
+                  <button
+                    onClick={() => navigate(`/documents/${doc._id}`)}
+                    className="flex-1 bg-black text-white py-2 rounded-xl"
+                  >
+                    Open
+                  </button>
+
+                  <button
+                    onClick={() => handleLeaveDocument(doc._id)}
+                    className="flex-1 bg-red-500 text-white py-2 rounded-xl"
+                  >
+                    Leave
+                  </button>
+                </div>
               </div>
             ))}
           </div>

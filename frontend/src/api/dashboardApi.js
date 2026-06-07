@@ -41,3 +41,13 @@ export const getSharedDocuments = async (token) => {
 
   return data;
 };
+
+export const leaveDocument = async (documentId, token) => {
+  const { data } = await api.delete(`/documents/${documentId}/leave`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return data;
+};

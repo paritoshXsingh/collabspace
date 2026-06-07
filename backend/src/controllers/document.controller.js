@@ -294,3 +294,34 @@ export const deleteDocument = asyncHandler(async (req, res) => {
     message: "Document deleted successfully",
   });
 });
+
+export const leaveDocument = asyncHandler(async (req, res) => {
+  const document = await Document.findById(req.params.id);
+
+  if (!document) {
+    throw new ApiError(404, "Document not found");
+  }
+
+  if (document.owner.toString() === req.user._id.toString()) {
+    throw new ApiError(400, "Owner cannot leave their own document");
+  }
+
+  const isCollaborator = document.collaborators.some(
+    (id) => id.toString() === req.user._id.toString(),
+  );
+
+  if (!isCollaborator) {
+    throw new ApiError(403, "You are not a collaborator on this document");
+  }
+
+  document.collaborators = document.collaborators.filter(
+    (id) => id.toString() !== req.user._id.toString(),
+  );
+
+  await document.save();
+
+  res.status(200).json({
+    success: true,
+    message: "Left document successfully",
+  });
+});
