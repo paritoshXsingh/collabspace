@@ -31,3 +31,13 @@ export const deleteDocument = async (documentId, token) => {
 
   return response.data;
 };
+
+export const getSharedDocuments = async (token) => {
+  const { data } = await api.get("/documents/shared", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return data;
+};

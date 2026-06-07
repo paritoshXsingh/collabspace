@@ -60,8 +60,6 @@ export const getSingleDocument = asyncHandler(async (req, res) => {
   });
 });
 
-
-
 // UPDATE DOC (PUT)
 export const updateDocument = asyncHandler(async (req, res) => {
   const { title, content } = req.body;
@@ -102,8 +100,6 @@ export const updateDocument = asyncHandler(async (req, res) => {
   });
 });
 
-
-
 //SHARE DOC
 export const shareDocument = asyncHandler(async (req, res) => {
   const { email } = req.body;
@@ -137,6 +133,23 @@ export const shareDocument = asyncHandler(async (req, res) => {
   res.status(200).json({
     success: true,
     message: "Collaborator added successfully",
+  });
+});
+
+//getSharedDocuments
+export const getSharedDocuments = asyncHandler(async (req, res) => {
+  const documents = await Document.find({
+    collaborators: req.user._id,
+  })
+    .populate("owner", "name email")
+    .sort({ updatedAt: -1 });
+
+  console.log("Curretn user", req.user._id);
+
+  res.status(200).json({
+    success: true,
+    count: documents.length,
+    documents,
   });
 });
 

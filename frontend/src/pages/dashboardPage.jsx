@@ -7,6 +7,7 @@ import {
   getUserDocuments,
   createDocument,
   deleteDocument,
+  getSharedDocuments,
 } from "../api/dashboardApi";
 import { logout } from "../features/auth/authSlice";
 
@@ -18,6 +19,8 @@ function DashboardPage() {
   const { token, user } = useSelector((state) => state.auth);
 
   const [documents, setDocuments] = useState([]);
+
+  const [sharedDocuments, setSharedDocuments] = useState([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -39,6 +42,10 @@ function DashboardPage() {
         const data = await getUserDocuments(token);
 
         setDocuments(data.documents);
+
+        const sharedData = await getSharedDocuments(token);
+
+        setSharedDocuments(sharedData.documents);
       } catch (error) {
         console.log(error);
       } finally {
@@ -254,6 +261,41 @@ function DashboardPage() {
                     Delete
                   </button>
                 </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-12 mb-4">
+          <h2 className="text-2xl font-bold text-slate-800">Shared With Me</h2>
+        </div>
+        {sharedDocuments.length === 0 ? (
+          <div className="bg-white rounded-3xl p-8 text-center shadow-sm">
+            <p className="text-gray-500">No shared documents</p>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {sharedDocuments.map((doc) => (
+              <div
+                key={doc._id}
+                className="bg-white rounded-3xl p-6 shadow-sm hover:shadow-xl transition"
+              >
+                <h2 className="text-xl font-bold text-slate-800">
+                  {doc.title}
+                </h2>
+
+                <p className="text-sm text-gray-500 mt-2">
+                  Owner: {doc.owner.name}
+                </p>
+
+                <p className="text-sm text-gray-500">{doc.owner.email}</p>
+
+                <button
+                  onClick={() => navigate(`/documents/${doc._id}`)}
+                  className="mt-4 w-full bg-black text-white py-2 rounded-xl"
+                >
+                  Open
+                </button>
               </div>
             ))}
           </div>

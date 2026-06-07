@@ -2,6 +2,7 @@ import express from "express";
 import {
   createDocument,
   getUserDocument,
+  getSharedDocuments,
   getSingleDocument,
   updateDocument,
   shareDocument,
@@ -18,6 +19,7 @@ const documentRouter = express.Router();
 
 documentRouter.post("/", protectedRoute, createDocument);
 documentRouter.get("/", protectedRoute, getUserDocument);
+documentRouter.get("/shared", protectedRoute, getSharedDocuments);
 documentRouter.get("/:id", protectedRoute, getSingleDocument);
 documentRouter.put("/:id", protectedRoute, updateDocument);
 documentRouter.post("/:id/share", protectedRoute, shareDocument);
