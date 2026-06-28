@@ -86,7 +86,7 @@ Invite collaborators through email and manage document access permissions.
 
 * React
 * React Router
-* Bootstrap
+* Tailwind
 * Axios
 
 ### Backend
